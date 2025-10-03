@@ -284,8 +284,8 @@
   (function(){
     'use strict';
     // ====== CONFIG ======
-    const DOC_ID = '1ESGkZf2P_0XMnyJgb7wN_L_Xo144nO6GPg30rrBZW58';
-    const SHEET  = 'Sheet1';
+    const DOC_ID = '1k9MxCirK_GP9hhC1ya-VnHZnjCPzIovYO3ynuMyurD4';
+    const SHEET  = 'Job';
     const GID    = '0';
     const APPLY_URL = 'apply.html';
 
@@ -353,7 +353,7 @@
 
     function looksLikeHeader(r0){
       const base = (r0||[]).map(x=>String(x||'').toLowerCase());
-      const keys = ['branch','area','nama job','job parent','group job','kualifikasi','salary','gaji','status'];
+      const keys = ['branch','area','nama job','industry','group job','kualifikasi','salary','gaji','status'];
       return keys.some(k => base.includes(k));
     }
     function stripHeader(arr){ if(!arr || !arr.length) return arr || []; return looksLikeHeader(arr[0]) ? arr.slice(1) : arr; }
