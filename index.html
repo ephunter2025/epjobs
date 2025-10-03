@@ -5,14 +5,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>EPHUNTER - Independent Headhunter</title>
-  <meta name="description" content="EPHUNTER - Independent Headhunter dengan filter Branch → Area → Group Job (dependent), tampilan mobile & web, kartu kapsul, popup detail + Apply. Fokus: load data sempurna (CSV/JSON robust), cepat (cache + pager), fallback andal."/>
+  <meta name="description" content="EPHUNTER - Independent Headhunter dengan filter Branch → Area → Industry (dependent), tampilan mobile & web, kartu kapsul, popup detail + Apply. Fokus: load data sempurna (CSV/JSON robust), cepat (cache + pager), fallback andal."/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     :root{
       --brand:#1BAFBF; --brand-ink:#0d5c66; --ink:#0f172a; --muted:#f1f5f9; --line:#e2e8f0; --bg:#ffffff; --card:#ffffff;
       --shadow:0 6px 20px rgba(0,0,0,.06); --radius:18px; --sticky-top:0px;
-      --sel-w: 210px; /* lebar seragam untuk Branch, Area, Group Job */
+      --sel-w: 210px; /* lebar seragam untuk Branch, Area, Industry */
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -205,7 +205,7 @@
           <select id="f-area" title="Pilih Branch dulu" disabled></select>
         </div>
         <div class="fgrp">
-          <label for="f-parent">Group Job</label>
+          <label for="f-parent">Industry</label>
           <select id="f-parent" title="Pilih Area dulu" disabled></select>
         </div>
         <div class="f-actions">
@@ -267,7 +267,7 @@
           <select id="mf-area" title="Pilih Branch dulu" disabled></select>
         </div>
         <div class="fgrp">
-          <label for="mf-parent">Group Job</label>
+          <label for="mf-parent">Industry</label>
           <select id="mf-parent" title="Pilih Area dulu" disabled></select>
         </div>
       </div>
@@ -298,7 +298,7 @@
     const EXPORT_CSV_SHEET= `https://docs.google.com/spreadsheets/d/${DOC_ID}/export?format=csv&sheet=${encodeURIComponent(SHEET)}`;
     const MIRROR = u => 'https://r.jina.ai/https/' + u.replace(/^https?:\/\//,'');
 
-    // Kolom: B=Branch, C=Area, D=Nama Job, E=Group Job, F=Kualifikasi, G=Salary, H=Status
+    // Kolom: B=Branch, C=Area, D=Nama Job, E=Industry, F=Kualifikasi, G=Salary, H=Status
     const COL = { BRANCH:1, AREA:2, JOB_NAME:3, JOB_PARENT:4, QUAL:5, SALARY:6, STATUS:7 };
     const CACHE_KEY = 'EPHunter_cache_v13';
 
@@ -353,7 +353,7 @@
 
     function looksLikeHeader(r0){
       const base = (r0||[]).map(x=>String(x||'').toLowerCase());
-      const keys = ['branch','area','nama job','industry','group job','kualifikasi','salary','gaji','status'];
+      const keys = ['branch','area','nama job','industry','Industry','kualifikasi','salary','gaji','status'];
       return keys.some(k => base.includes(k));
     }
     function stripHeader(arr){ if(!arr || !arr.length) return arr || []; return looksLikeHeader(arr[0]) ? arr.slice(1) : arr; }
@@ -428,7 +428,7 @@
       setOptions($area, areas, bKey ? 'Semua Area' : 'Pilih Branch dulu');
       $area.disabled = !bKey || areas.length === 0;
 
-      // Reset & update Group Job setelah area berubah
+      // Reset & update Industry setelah area berubah
       $parent.value = '';
       updateParentOptions();
     }
@@ -441,7 +441,7 @@
           .filter(r => (!bKey || toKey(r[COL.BRANCH]) === bKey) && (!aKey || toKey(r[COL.AREA]) === aKey))
           .map(r => r[COL.JOB_PARENT] || '')
       );
-      setOptions($parent, parents, (bKey && aKey) ? 'Semua Group Job' : 'Pilih Area dulu');
+      setOptions($parent, parents, (bKey && aKey) ? 'Semua Industry' : 'Pilih Area dulu');
       $parent.disabled = !(bKey && aKey) || parents.length === 0;
     }
 
@@ -467,7 +467,7 @@
           .filter(r => (!bKey || toKey(r[COL.BRANCH]) === bKey) && (!aKey || toKey(r[COL.AREA]) === aKey))
           .map(r => r[COL.JOB_PARENT] || '')
       );
-      setOptions($mfParent, parents, (bKey && aKey) ? 'Semua Group Job' : 'Pilih Area dulu');
+      setOptions($mfParent, parents, (bKey && aKey) ? 'Semua Industry' : 'Pilih Area dulu');
       $mfParent.disabled = !(bKey && aKey) || parents.length === 0;
     }
 
@@ -594,7 +594,7 @@
       const r = filtered[absIndex] || [];
       const job = r[COL.JOB_NAME], parent = r[COL.JOB_PARENT], area = r[COL.AREA], qual = r[COL.QUAL], sal = r[COL.SALARY];
       $dJob.textContent = job || '-';
-      $dParent.textContent = parent ? `Group Job: ${parent}` : '-';
+      $dParent.textContent = parent ? `Industry: ${parent}` : '-';
       $dArea.textContent = area || '-';
       $dSalary.textContent = sal || '-';
       $dQual.innerHTML = qualToHTML(qual || '');
